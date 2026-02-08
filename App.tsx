@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
-import { AppraisalInputs, AppraisalResults, YearlyData, GeminiInsight, SensitivityLevel, SensitivityScenario } from './types';
+import { AppraisalInputs, AppraisalResults, YearlyData, GeminiInsight, SensitivityLevel } from './types';
 import { runAppraisal } from './utils/finance';
 import { getGeminiAnalysis } from './services/geminiService';
 import FinancialCharts from './components/FinancialCharts';
@@ -39,11 +38,8 @@ const App: React.FC = () => {
   const [insight, setInsight] = useState<GeminiInsight | null>(null);
   const [loadingInsight, setLoadingInsight] = useState(false);
 
-  // Apply sensitivity to base inputs for calculation
   const activeInputs = useMemo(() => {
     const returnFactor = 1 + (returnSensitivity / 100);
-    // For investment: "Boost" means lower cost (-%), "Lower" (as in performance) usually means higher cost (+%).
-    // To keep it simple for the user: if they select "10% Boost" for investment, we reduce the cost by 10%.
     const investmentFactor = 1 - (investmentSensitivity / 100);
     
     return {
@@ -119,7 +115,6 @@ const App: React.FC = () => {
       </header>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        {/* Left Column: Inputs */}
         <div className="xl:col-span-1 space-y-6">
           <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -247,11 +242,9 @@ const App: React.FC = () => {
           </section>
         </div>
 
-        {/* Right Column: Results & Analysis */}
         <div className="xl:col-span-2 space-y-8">
           {results && (
             <>
-              {/* Sensitivity Summary Badge */}
               {(returnSensitivity !== 0 || investmentSensitivity !== 0) && (
                 <div className="bg-indigo-900 text-white p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-md animate-pulse">
                   <div className="flex items-center gap-3">
@@ -269,7 +262,6 @@ const App: React.FC = () => {
                 </div>
               )}
 
-              {/* Summary Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-indigo-500 flex flex-col justify-between">
                   <span className="text-sm text-gray-500 font-medium">Internal Rate of Return</span>
@@ -287,7 +279,6 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* NPV & Metrics */}
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-500 mb-1">Net Present Value (NPV)</h3>
@@ -308,7 +299,6 @@ const App: React.FC = () => {
                 </button>
               </div>
 
-              {/* Gemini Insights */}
               {insight && (
                 <div className="bg-gradient-to-br from-indigo-50 to-white p-8 rounded-2xl border border-indigo-100 shadow-sm animate-fade-in">
                   <div className="flex items-center gap-3 mb-6">
@@ -351,20 +341,10 @@ const App: React.FC = () => {
                 </div>
               )}
 
-              {/* Charts Section */}
               <FinancialCharts results={results} />
             </>
           )}
         </div>
-      </div>
-
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:hidden">
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="bg-indigo-600 text-white p-4 rounded-full shadow-lg"
-        >
-          <i className="fas fa-arrow-up"></i>
-        </button>
       </div>
     </div>
   );
