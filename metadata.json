@@ -1,0 +1,5 @@
+{
+  "name": "InvestPro Appraisal",
+  "description": "A professional-grade investment appraisal tool featuring IRR, Cash Payback, and Accounting Payback calculations, with AI-driven financial insights using Gemini.",
+  "requestFramePermissions": []
+}
